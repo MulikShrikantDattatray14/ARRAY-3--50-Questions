@@ -1,0 +1,76 @@
+Example 1:
+Input:
+ Nums = [1,2,3,4,5,0]
+Output:
+ 120
+Explanation:
+ In the given array, we can see 1×2×3×4×5 gives maximum product value.
+
+Brute Force Approach : 
+Approach:
+Find all possible subarrays of the given array. Find the product of each subarray. Return the maximum of all them.
+
+
+function maxProductSubArray(nums) {
+    let result = Number.MIN_SAFE_INTEGER;
+    for (let i = 0; i < nums.length - 1; i++) {
+        for (let j = i + 1; j < nums.length; j++) {
+            let prod = 1;
+            for (let k = i; k <= j; k++) {
+                prod *= nums[k];
+            }
+            result = Math.max(result, prod);
+        }
+    }
+    return result;
+}
+
+let nums = [1, 2, -3, 0, -4, -5];
+console.log("The maximum product subarray: " + maxProductSubArray(nums));
+
+Complexity Analysis : 
+
+Time Complexity: O(N3)
+Reason: We are using 3 nested loops for finding all possible subarrays and their product.
+
+Space Complexity: O(1)
+Reason: No extra data structure was used.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Optimal Approach 1:-// see striver explaination-
+
+We will optimize the solution through some observations.
+
+Observations:
+
+If the given array only contains positive numbers: If this is the case, we can confidently say that the maximum product subarray will be the entire array itself.
+If the given also array contains an even number of negative numbers: As we know, an even number of negative numbers always results in a positive number. So, also, in this case, the answer will be the entire array itself.
+If the given array also contains an odd number of negative numbers: 
+
+
+
+function maxProductSubArray(arr) {
+    let n = arr.length; // size of array.
+    let pre = 1; let suff = 1;
+    let ans = Number.MIN_SAFE_INTEGER;
+    for (let i = 0; i < n; i++) {
+        if (pre === 0) pre = 1;// start new subarray.
+        if (suff === 0) suff = 1;// start new subarray.
+        pre *= arr[i];
+        suff *= arr[n - i - 1];
+        console.log(pre, suff)
+        ans = Math.max(ans, Math.max(pre, suff));
+    }
+    return ans;
+}
+
+let arr = [1, 2, -3, 0, -4, -5];
+console.log("The maximum product subarray is: " + maxProductSubArray(arr));
+Complexity Analysis :
+Time Complexity: O(N), N = size of the given array.
+Reason: We are using a single loop that runs for N times.
+
+Space Complexity: O(1) as No extra data structures are used for computation.
+
+=============================================================================================================

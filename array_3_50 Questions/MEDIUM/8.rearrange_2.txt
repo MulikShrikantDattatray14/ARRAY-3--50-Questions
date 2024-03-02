@@ -1,0 +1,71 @@
+Variety-2 : Problem Statement:
+
+There’s an array ‘A’ of size ‘N’ with positive and negative elements (not necessarily equal). Without altering the relative order of positive and negative elements, you must return an array of alternately positive and negative values. The leftover elements should be placed at the very end in the same order as in array A.
+
+Note: Start the array with positive elements.
+
+
+function RearrangebySign(A) {
+    let n = A.length;
+    // Define 2 arrays, one for storing positive 
+    // and other for negative elements of the array.
+    let pos = [];
+    let neg = [];
+    // Segregate the array into positives and negatives.
+    for (let i = 0; i < n; i++) {
+        if (A[i] > 0) pos.push(A[i]);
+        else neg.push(A[i]);
+    }
+    // If positives are lesser than the negatives.
+    if (pos.length < neg.length) {
+        // First, fill array alternatively till the point 
+        // where positives and negatives are equal in number.
+        for (let i = 0; i < pos.length; i++) {
+            A[2 * i] = pos[i];
+            A[2 * i + 1] = neg[i];
+        }
+        // Fill the remaining negatives at the end of the array.
+        let index = pos.length * 2;
+        for (let i = pos.length; i < neg.length; i++) {
+            A[index] = neg[i];
+            index++;
+        }
+    }
+    // If negatives are lesser than the positives.
+    else {
+
+        // First, fill array alternatively till the point 
+        // where positives and negatives are equal in number.
+        for (let i = 0; i < neg.length; i++) {
+
+            A[2 * i] = pos[i];
+            A[2 * i + 1] = neg[i];
+        }
+
+        // Fill the remaining positives at the end of the array.
+        let index = neg.length * 2;
+        for (let i = neg.length; i < pos.length; i++) {
+
+            A[index] = pos[i];
+            index++;
+        }
+    }
+    return A;
+
+}
+
+// Array Initialisation.
+let A = [1, 2, -4, -5, 3, 4];
+
+let ans = RearrangebySign(A);
+
+for (let i = 0; i < ans.length; i++) {
+    console.log(ans[i]);
+}
+
+
+Time Complexity: O(2*N) { The worst case complexity is O(2*N) which is a combination of O(N) of traversing the array to segregate into neg and pos array and O(N) for adding the elements alternatively to the main array}.
+
+Explanation: The second O(N) is a combination of O(min(pos, neg)) + O(leftover elements). There can be two cases: when only positive or only negative elements are present, O(min(pos, neg)) + O(leftover) = O(0) + O(N), and when equal no. of positive and negative elements are present, O(min(pos, neg)) + O(leftover) = O(N/2) + O(0). So, from these two cases, we can say the worst-case time complexity is O(N) for the second part, and by adding the first part we get the total complexity of O(2*N).
+
+Space Complexity:  O(N/2 + N/2) = O(N) { N/2 space required for each of the positive and negative element arrays, where N = size of the array A}.

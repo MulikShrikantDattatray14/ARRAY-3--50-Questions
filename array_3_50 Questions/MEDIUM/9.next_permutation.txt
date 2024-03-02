@@ -1,0 +1,71 @@
+Problem Statement: 
+
+Given an array Arr[] of integers, rearrange the numbers of the given array into the lexicographically next greater permutation of numbers.
+
+If such an arrangement is not possible, it must rearrange to the lowest possible order (i.e., sorted in ascending order).
+
+/////////////////////////////////////////////////////////////////////////////////
+Solution 1-Brute Force: Finding all possible permutations. 
+
+Step 1: Find all possible permutations of elements present and store them.
+
+Step 2: Search input from all possible permutations.
+
+Step 3: Print the next permutation present right after it.
+
+////////////////////////////////////////////////////////////////////////////////
+optimal solution :
+//https://www.youtube.com/watch?v=umhrBhdLkaY
+
+
+let nums = [1, 2, 3]
+
+let ans = solve(nums);
+console.log(ans)
+
+function solve(A) {
+    let n = A.length;
+    // keep k at the second last position., we always look right of K.
+    let k = n - 2;
+    // Edge case
+    if (A.length <= 1) return A;
+    // check for if all the elements ahead of k is sorted in descending order i.e all the elements ahead of the k has reached the end , so lets take k backwards towards the 0th index
+    // move k backwards towards 0th index, right of K , everything will be descending
+    for (let i = n - 1; i > 0; i--) {
+        if (A[i] <= A[i - 1]) {// '=' handles duplicate
+            k--;
+        } else {
+            break;
+        }
+    }
+
+    // if k==-1 , reverse the part right of k
+    if (k == -1) {
+        reverse(A, 0, n - 1);
+        return A;
+    }
+
+    //else replace k with the next greater element reverse
+    // look for the very first greater element than the elemnt at k and swap the both
+    for (let i = n - 1; i > 0; i--) {
+        if (A[i] > A[k]) {
+            let temp = A[k];
+            A[k] = A[i];
+            A[i] = temp;
+            break;
+        }
+    }
+    // reverse subarray ahead of K .
+    reverse(A, k + 1, n - 1)
+    return A;
+}
+
+function reverse(arr, i, j) {
+    while (i < j) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+        i++;
+        j--
+    }
+}

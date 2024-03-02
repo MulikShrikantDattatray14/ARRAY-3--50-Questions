@@ -1,0 +1,52 @@
+//brute_force- hashing :
+function getSingleElement(arr1) {
+  let n = arr1.length;
+  let freq = new Map();
+
+  for (let num of arr1) {
+    if (freq.has(num)) {
+      freq.set(num, freq.get(num) + 1);
+    } else {
+      freq.set(num, 1);
+    }
+  }
+  // Find the single element and return the answer:
+  for (let i = 0; i < n; i++) {
+    if (freq.get(arr1[i]) === 1) {
+      return arr1[i];
+    }
+  }
+
+  // This line will never execute
+  // if the array contains a single element.
+  return -1;
+}
+
+function main() {
+  let arr = [4, 1, 2, 1, 2];
+  let ans = getSingleElement(arr);
+  console.log("The single element is:", ans);
+}
+
+main();
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Optimal Approach(Using XOR): 
+function getSingleElement(arr) {
+    // XOR all the elements:
+    let xorr = 0;
+    for (let i = 0; i < arr.length; i++) {
+        xorr = xorr ^ arr[i];
+    }
+    return xorr;
+}
+
+function main() {
+    let arr = [4, 1, 2, 1, 2];
+    let ans = getSingleElement(arr);
+    console.log("The single element is:", ans);
+}
+
+main();
+
+

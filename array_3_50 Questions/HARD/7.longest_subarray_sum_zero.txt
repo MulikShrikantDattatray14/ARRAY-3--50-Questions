@@ -1,0 +1,121 @@
+Problem Statement: 
+
+Given an array containing both positive and negative integers, we have to find the length of the longest subarray with the sum of all elements equal to zero.
+
+Examples
+Example 1:
+Input Format: N = 6, array[] = {9, -3, 3, -1, 6, -5}
+Result: 5
+Explanation: The following subarrays sum to zero:
+{-3, 3} , {-1, 6, -5}, {-3, 3, -1, 6, -5}
+Since we require the length of the longest subarray, our answer is 5!
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+
+Brute Force Approach : 
+Algorithm / Intuition
+Solution 1 (Naive approach) :
+Intuition:
+We are required to find the longest subarray that sums to zero. So our initial approach could be to consider all possible subarrays of the given array and check for the subarrays that sum to zero. Among these valid subarrays (a sum equal to zero) we’ll return the length of the largest subarray by maintaining a variable, say max.   
+
+CODE : 
+
+function solve(a) {
+  let max = 0;
+  for (let i = 0; i < a.length; ++i) {
+    let sum = 0;
+    for (let j = i; j < a.length; ++j) {
+      sum += a[j];
+      if (sum === 0) {
+        max = Math.max(max, j - i + 1);
+      }
+    }
+  }
+  return max;
+}
+
+const a = [9, -3, 3, -1, 6, -5];
+console.log(solve(a));
+
+
+Complexity Analysis : 
+Time Complexity: O(N^2) as we have two loops for traversal
+
+Space Complexity: O(1) as we aren’t using any extra space.
+
+Can this be done in a single traversal? Let’s check 🙂 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Optimal Approach :
+Algorithm / Intuition
+Solution 2 (Optimised Approach):
+Intuition: 
+Now let’s say we know that the sum of subarray(i, j) = S, and we also know that the sum of subarray(i, x) = S where i < x < j. We can conclude that the sum of subarray(x+1, j) = 0.
+
+Let us understand the above statement clearly,
+
+So in this problem, we’ll store the prefix sum of every element, and if we observe that 2 elements have the same prefix sum, we can conclude that the 2nd part of this subarray sums to zero
+
+NOTE: we do not update the index of a sum if it’s seen again because we require the length of the longest subarray
+
+Complexity Analysis
+Time Complexity: O(N), as we are traversing the array only once
+
+Space Complexity: O(N), in the worst case we would insert all array elements prefix sum into our hashmap
+
+
+
+function maxLen(A, n) {
+  let mpp = new Map();
+  let maxi = 0;
+  let sum = 0;
+
+  for (let i = 0; i < n; i++) {
+    sum += A[i];
+    if (sum === 0) {
+      maxi = i + 1;
+      console.log(A.slice(0, maxi))
+    } else {
+      if (mpp.has(sum)) {
+        maxi = Math.max(maxi, i - mpp.get(sum));
+        console.log(A.slice(mpp.get(sum) + 1, i + 1))
+      } else {
+        mpp.set(sum, i);
+      }
+    }
+  }
+  return maxi;
+}
+let A = [9, -3, 3, -1, 6, -5];
+let n = A.length;
+console.log(maxLen(A, n));
+
+
+================[OR]===================================
+
+
+function maxLen(A, n) {
+  let mpp = new Map();
+  let maxi = 0;
+  let sum = 0;
+  mpp.set(0, -1)
+  for (let i = 0; i < n; i++) {
+    sum += A[i];
+
+    if (mpp.has(sum)) {
+      maxi = Math.max(maxi, i - mpp.get(sum));
+      console.log(A.slice(mpp.get(sum) + 1, i + 1))
+    } else {
+      mpp.set(sum, i);
+    }
+  }
+
+  return maxi;
+}
+let A = [9, -3, 3, -1, 6, -5];
+let n = A.length;
+console.log(maxLen(A, n));

@@ -1,0 +1,145 @@
+Problem Statement:-
+
+Given an array of integers A and an integer B. Find the total number of subarrays having bitwise XOR of all elements equal to k.
+
+Pre-requisite: Find the number of subarrays with the sum K
+
+Examples:
+Example 1:
+Input Format: A = [4, 2, 2, 6, 4] , k = 6
+Result: 4
+Explanation: The subarrays having XOR of their elements as 6 are  [4, 2], [4, 2, 2, 6, 4], [2, 2, 6], [6]
+
+Example 2:
+Input Format: A = [5, 6, 7, 8, 9], k = 5
+Result: 2
+Explanation: The subarrays having XOR of their elements as 5 are [5] and [5, 6, 7, 8, 9]
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Brute Force Approach : 
+Algorithm / Intuition
+Solution:
+Naive Approach (Brute-force): 
+Here, in this approach, we are going to generate all possible subarrays to solve this problem.
+
+CODE : 
+
+function subarraysWithXorK(a, k) {
+  const n = a.length;
+  let cnt = 0;
+  // Step 1: Generating subarrays:
+  for (let i = 0; i < n; i++) {
+    for (let j = i; j < n; j++) {
+      // Step 2: calculate XOR of all elements:
+      let xorr = 0;
+      for (let K = i; K <= j; K++) {
+        xorr = xorr ^ a[K];
+      }
+      // Step 3: check XOR and count:
+      if (xorr === k) cnt++;
+    }
+  }
+  return cnt;
+}
+
+const a = [4, 2, 2, 6, 4];
+const k = 6;
+const ans = subarraysWithXorK(a, k);
+console.log("The number of subarrays with XOR k is:", ans);
+
+
+Complexity Analysis :
+Time Complexity: O(N3) approx., where N = size of the array.
+Reason: We are using three nested loops, each running approximately N times.
+
+Space Complexity: O(1) as we are not using any extra space.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Optimal Approach : 
+Algorithm / Intuition
+Optimal Approach(Using Hashing): 
+In this approach, we are going to use the concept of the prefix XOR to solve this problem. Here, the prefix XOR of a subarray ending at index i, simply means the XOR of all the elements of that subarray.
+
+
+Complexity Analysis :
+Time Complexity: O(N) or O(N*logN) depending on which map data structure we are using, where N = size of the array.
+Reason: For example, if we are using an unordered_map data structure in C++ the time complexity will be O(N) but if we are using a map data structure, the time complexity will be O(N*logN). The least complexity will be O(N) as we are using a loop to traverse the array. Point to remember for unordered_map in the worst case, the searching time increases to O(N), and hence the overall time complexity increases to O(N2). 
+
+Space Complexity: O(N) as we are using a map data structure.
+
+
+//Find the total number of subarrays having bitwise XOR of all elements equal to k.
+
+function subarraysWithXorK(a, k) {
+  const n = a.length; //size of the given array.
+  let xr = 0;
+  const mpp = new Map(); //declaring the map.
+  mpp.set(xr, 1); //setting the value of 0.
+  let cnt = 0;
+
+  for (let i = 0; i < n; i++) {
+    // prefix XOR till index i:
+    xr = xr ^ a[i];
+
+
+    if (mpp.has(xr ^ k)) {
+      // add the occurrence of xr^k
+      // to the count:
+      cnt += mpp.get(xr ^ k)
+    }
+    if (mpp.has(xr)) {
+      // Insert the prefix xor till index i
+      // into the map:
+      mpp.set(xr, (mpp.get(xr) + 1));
+    } else {
+      mpp.set(xr, 1);
+    }
+
+
+  }
+  return cnt;
+}
+
+const a = [4, 2, 2, 6, 4];
+const k = 6;
+const ans = subarraysWithXorK(a, k);
+console.log(`The number of subarrays with XOR k is: ${ans}`);
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//note : count subarray with the given sum : 
+
+
+
+function findAllSubarraysWithGivenSum(arr, k) {
+  const n = arr.length;
+  const mpp = new Map();
+  let preSum = 0,
+    cnt = 0;
+
+  mpp.set(0, 1);
+
+  for (let i = 0; i < n; i++) {
+    preSum += arr[i];
+    if (mpp.has(preSum - k)) {
+      // add the occurrence of xr^k
+      // to the count:
+      cnt += mpp.get(preSum - k)
+    }
+    if (mpp.has(preSum)) {
+      // Insert the prefix xor till index i
+      // into the map:
+      mpp.set(preSum, (mpp.get(preSum) + 1));
+    } else {
+      mpp.set(preSum, 1);
+    }
+  }
+  return cnt;
+}
+
+const arr = [3, 1, 2, 4];
+const k = 6;
+const cnt = findAllSubarraysWithGivenSum(arr, k);
+console.log("The number of subarrays is:", cnt);

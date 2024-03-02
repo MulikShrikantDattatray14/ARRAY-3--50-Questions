@@ -1,0 +1,79 @@
+Variation 2 : 
+
+Given the row number n. Print the n-th row of Pascal’s triangle.
+Our first observation regarding Pascal’s triangle should be that the n-th row of the triangle has exactly n elements. With this observation, we will proceed to solve this problem.
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Naive Approach : 
+
+In this approach, for every column from 1 to n, we will calculate the element (n, c)(where n is the given row number and c is the column number that will vary from 1 to n) using the previous method. Thus, we will print the row.  
+
+
+CODE : 
+
+
+function nCr(n, r) {
+  let res = 1;
+  // calculating nCr:
+  for (let i = 0; i < r; i++) {
+    res = res * (n - i);
+    res = res / (i + 1);
+  }
+  return res;
+}
+
+function pascalTriangle(n) {
+  // printing the entire row n:
+  for (let c = 1; c <= n; c++) {
+    console.log(nCr(n - 1, c - 1) + " ");
+  }
+  console.log();
+}
+
+const n = 5;
+pascalTriangle(n);
+
+Complexity Analysis : 
+
+Time Complexity: O(n*r), where n is the given row number, and r is the column index which can vary from 0 to n-1.
+Reason: We are calculating the element for each column. Now, there are total n columns, and for each column, the calculation of the element takes O(r) time where r is the column index.
+
+Space Complexity: O(1) as we are not using any extra space.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Optimal approach : 
+
+Approach:
+The steps are as follows:
+
+1.First, we will print the 1st element i.e. 1 manually.
+2.After that, we will use a loop(say i) that runs from 1 to n-1. It will print the rest of the elements.
+3.Inside the loop, we will use the above-said formula to print the element. We will multiply the previous answer by (n-i) and then divide it by i itself.
+4.Thus, the entire row will be printed.
+
+Complexity Analysis :-
+Time Complexity: O(N) where N = given row number. Here we are using only a single loop.
+
+Space Complexity: O(1) as we not using any extra space.
+
+
+// see the striver explaination 
+let final = []
+function pascalTriangle(n) {
+  let ans = 1;
+  final.push(ans)// printing 1st element
+  //Printing the rest of the part:
+  for (let i = 1; i < n; i++) {
+    // subtract column from nth row each time.
+    ans = ans * (n - i);
+    //divide that ans by the column
+    ans = ans / i;
+    final.push(ans)
+  }
+}
+const n = 4;
+pascalTriangle(n);
+console.log(final)

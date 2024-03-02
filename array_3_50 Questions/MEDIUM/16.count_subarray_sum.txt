@@ -1,0 +1,86 @@
+Problem Statement:-
+
+Given an array of integers and an integer k, return the total number of subarrays whose sum equals k.
+
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+============================================================================================================
+
+Optimal Approach : 
+Algorithm / Intuition-
+
+Intuition: If we carefully observe, we can notice that to get the sum of the current subarray we just need to add the current element(i.e. arr[j]) to the sum of the previous subarray i.e. arr[i….j-1].
+
+Assume previous subarray = arr[i……j-1]
+current subarray = arr[i…..j]
+Sum of arr[i….j] = (sum of arr[i….j-1]) + arr[j]
+
+This is how we can remove the third loop and while moving j pointer, we can calculate the sum.
+
+CODE: 
+
+function findAllSubarraysWithGivenSum(arr, k) {
+    const n = arr.length; // size of the given array.
+    let cnt = 0; // Number of subarrays:
+
+    for (let i = 0; i < n; i++) { // starting index i
+        let sum = 0;
+        for (let j = i; j < n; j++) { // ending index j
+            // calculate the sum of subarray [i...j]
+            // sum of [i..j-1] + arr[j]
+            sum += arr[j];
+
+            // Increase the count if sum == k:
+            if (sum === k)
+                cnt++;
+        }
+    }
+    return cnt;
+}
+
+const arr = [3, 1, 2, 4];
+const k = 6;
+const cnt = findAllSubarraysWithGivenSum(arr, k);
+console.log("The number of subarrays is: " + cnt);
+
+
+Time Complexity:
+The time complexity of this code is O(n^2), where n is the length of the input array. This is because there are two nested loops, and for each combination of starting and ending indices, we perform constant-time operations.
+
+Space Complexity:
+The space complexity is O(1) since we use a constant amount of extra space regardless of the size of the input array.
+
+============================================================================================================
+
+Optimal Approach : 
+Algorithm / Intuition - 
+In this approach, we are going to use the concept of the prefix sum to solve this problem. Here, the prefix sum of a subarray ending at index i simply means the sum of all the elements of that subarray.
+
+ Time Complexity: O(n)
+Space Complexity: O(n)
+
+
+//return the total number of subarrays whose sum equals to k.
+function findAllSubarraysWithGivenSum(arr, k) {
+    const n = arr.length;
+    const mpp = new Map();
+    let preSum = 0;
+    let cnt = 0;
+    mpp.set(0, 1);
+    for (let i = 0; i < n; i++) {
+        preSum += arr[i];
+        if (mpp.has(preSum - k)) {
+            cnt += mpp.get(preSum - k)
+        }
+        if (mpp.has(preSum)) {
+            mpp.set(preSum, mpp.get(preSum) + 1)
+        } else {
+            mpp.set(preSum, 1)
+        }
+    }
+    return cnt;
+}
+const arr = [3, 1, 2, 4];
+const k = 6;
+const cnt = findAllSubarraysWithGivenSum(arr, k);
+console.log("The number of subarrays is:", cnt);

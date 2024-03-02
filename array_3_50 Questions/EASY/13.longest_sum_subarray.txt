@@ -1,0 +1,103 @@
+//Longest Subarray with given Sum K(Positives)
+// Problem Statement: Given an array and a sum k, we need to print the length of the longest subarray that sums to k.
+
+//Examples:
+//Example 1:
+// Input Format: N = 3, k = 5, array[] = {2,3,5}
+// Result: 2
+// Explanation: The longest subarray with sum 5 is {2, 3}. And its length is 2.
+
+//1.Naive Approach (Brute-force approach):
+//Here, in this approach, we are going to generate all possible subarrays to solve this problem.
+
+// function getLongestSubarray(a, k) {
+//   let n = a.length; // size of the array
+
+//   let len = 0;
+//   for (let i = 0; i < n; i++) {
+//     // starting index
+//     for (let j = i; j < n; j++) {
+//       // ending index
+//       // add all the elements of subarray = a[i...j]
+//       let s = 0;
+//       for (let K = i; K <= j; K++) {
+//         s += a[K];
+//       }
+
+//       if (s === k) len = Math.max(len, j - i + 1);
+//     }
+//   }
+//   return len;
+// }
+
+// let a = [2, 3, 5, 1, 9];
+// let k = 10;
+// let len = getLongestSubarray(a, k);
+// console.log("The length of the longest subarray is:", len);
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Solution 2:Optimizing the Naive Approach (Using two loops): 
+
+
+
+
+// function getLongestSubarray(a, k) {
+//     let n = a.length; // size of the array
+//     let len = 0;
+//     for (let i = 0; i < n; i++) { // starting index
+//         let s = 0; // Sum variable
+//         for (let j = i; j < n; j++) { // ending index
+//             // add the current element to
+//             // the subarray a[i...j-1]
+//             s += a[j];
+
+//             if (s === k)
+//                 len = Math.max(len, j - i + 1);
+//         }
+//     }
+//     return len;
+// }
+
+// let a = [2, 3, 5, 1, 9];
+// let k = 10;
+// let len = getLongestSubarray(a, k);
+// console.log("The length of the longest subarray is:", len);
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//most optimised-Optimal Approach (Using 2 pointers): 
+
+
+function getLongestSubarray(a, k) {
+    let n = a.length; // size of the array
+    let left = 0, right = 0; // 2 pointers
+    let sum = a[0];
+    let maxLen = 0;
+    while (right < n) {
+        // if sum > k, reduce the subarray from left
+        // until sum becomes less or equal to k
+        while (left <= right && sum > k) {
+            sum = sum - a[left];
+            left++;
+        }
+        // if sum = k, update the maxLen i.e. answer
+        if (sum === k) {
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+        // Move forward the right pointer
+        right++;
+        if (right < n) sum += a[right];
+    }
+
+    return maxLen;
+}
+
+let a = [-1, 1, 1];
+let k = 1;
+let len = getLongestSubarray(a, k);
+console.log("The length of the longest subarray is:", len);
+
+
+
+

@@ -1,0 +1,91 @@
+Variation 3 : Variation 3: Given the number of rows n. Print the first n rows of Pascal’s triangle.
+
+
+Naive Approach :-
+
+Algorithm / Intuition-
+
+The naive approach is basically a combination of variation 1 and variation 2. Here, for every row from 1 to n, we will try to generate all the row elements by simply using the naive approach of variation 2. So, we will use the same code as variation 2(naive approach), inside a loop (i.e. row runs from 1 to n).
+
+CODE : 
+
+// note :- even this code is getting submitted on leetcode -
+
+
+function nCr(n, r) {
+  let res = 1;
+  // calculating nCr:
+  for (let i = 0; i < r; i++) {
+    res = res * (n - i);
+    res = res / (i + 1);
+  }
+  return parseInt(res);
+}
+
+function pascalTriangle(n) {
+  const ans = [];
+  //Store the entire pascal's triangle:
+  for (let row = 1; row <= n; row++) {
+    const tempLst = []; // temporary list
+    for (let col = 1; col <= row; col++) {
+      tempLst.push(nCr(row - 1, col - 1));
+    }
+    ans.push(tempLst);
+  }
+  return ans;
+}
+
+const n = 5;
+const ans = pascalTriangle(n);
+let final = []
+for (let i = 0; i < ans.length; i++) {
+  final.push(ans[i]);
+}
+console.log(final)
+
+Complexity Analysis : 
+Time Complexity: O(n*n*r) ~ O(n3), where n = number of rows, and r = column index.
+Reason: The row loop will run for approximately n times. And generating a row using the naive approach of variation 2 takes O(n*r) time complexity.
+
+Space Complexity: In this case, we are only using space to store the answer. That is why space complexity can be still considered as O(1).
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Optimal Approach :-
+
+Algorithm / Intuition :-
+
+Now, in the optimal approach of variation 2, we have learned how to generate a row in O(n) time complexity. So, in order to optimize the overall time complexity, we will be using that approach for every row. Thus the total time complexity will reduce.
+
+Complexity Analysis : 
+Time Complexity: O(n2), where n = number of rows(given).
+Reason: We are generating a row for each single row. The number of rows is n. And generating an entire row takes O(n) time complexity.
+
+Space Complexity: In this case, we are only using space to store the answer. That is why space complexity can still be considered as O(1).
+
+=============================================================================================================
+
+function generateRow(row) {
+  let ans = 1;
+  let ansRow = [1]; // inserting the 1st element
+  // calculate the rest of the elements:
+  for (let col = 1; col < row; col++) {
+    ans = ans * (row - col);
+    ans = ans / col;
+    ansRow.push(ans);
+  }
+  return ansRow;
+}
+
+function pascalTriangle(n) {
+  let ans = [];
+  // store the entire pascal's triangle:
+  for (let row = 1; row <= n; row++) {
+    ans.push(generateRow(row));
+  }
+  console.log(ans)
+
+}
+
+let n = 5;
+pascalTriangle(n);

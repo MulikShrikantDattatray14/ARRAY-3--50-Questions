@@ -1,0 +1,27 @@
+//sorting:
+function sortArr(arr) {
+  arr.sort((a, b) => a - b);
+  return arr[arr.length - 1];
+}
+
+// Complexity Analysis
+// Time Complexity: O(N*log(N))
+
+// Space Complexity: O(n)
+/////////////////////////////////////////////////////////////////////////////
+
+// Using a max variable:
+function findLargestElement(arr) {
+    let max = arr[0];
+    for (let i = 0; i < arr.length; i++) {
+      if (max < arr[i]) {
+        max = arr[i];
+      }
+    }
+    return max;
+  }
+
+//   Complexity Analysis
+// Time Complexity: O(N)
+
+// Space Complexity: O(1)
